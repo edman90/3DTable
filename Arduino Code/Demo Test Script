@@ -1,0 +1,151 @@
+/* Midterm Demo Servo Test Script
+ by Michael Fox
+This code is a test script used to demonstrate functionality for the midterm demo. It's basic premise will be used in the final design but much of the specifics are only applicable to the midterm demo.
+The following functionality will be demonstrated
+1. Group control
+  All servos will be jogged in the same manner, demonstrating full control of all servos
+2. Individual Control
+  All servos will be jogged in a unique manner, demonstrating how each servo can be controlled individually\
+3. Read & Write Position
+  The system will be switched into read mode and each servo will be manually moved to a unique positon
+  This positon will then be recorded
+  The system will then be switched back to write mode
+  The servos will all be sent back to their previously recorded positions
+*/
+#include <Servo.h>
+
+//Declare all servo objects
+Servo servo0;
+Servo servo1;
+Servo servo2;
+ 
+ // Declare Analog input pins
+int servo0_feedback = 0;   //probably makes sense to make a new servo class that has feedback as an attribute(?), method(?)
+int servo1_feedback = 1;   //would be great to just have a single array that represents all of the servos that could be iterated through
+int servo2_feedback = 7;  // uncomment when more servos are connected
+ 
+int calibrate_button = 6;
+int mode1_button = 5;   //push buttons are used to provide control to the user
+int mode2_button = 4;
+int recordPosition_button = 3;
+int writePosition_button = 2; // TODO: I won't have enough analog inputs to read writePosition_button, consider scraping group control and make it part of startup
+ 
+ // Variable declarations
+ int minPos0, minPos1, minPos2, maxPos0, maxPos1, maxPos2;
+void setup() {
+  // Tell arduino which pins to send PWM signal to
+  servo0.attach(8);
+  servo1.attach(9); 
+  servo2.attach(10);  
+
+  Serial.begin(9600);
+
+   
+}
+ 
+void loop() {
+  int position_cmd;
+  int position_read[16];
+  
+  
+ /*   for (int i = 0; i<= 15; i+=1)
+      {
+        position_read[i] = map(analogRead(servo0_feedback), minPos, maxPos, 0, 180);        
+      }
+
+  //position_read[0] = analogRead(servo0_feedback);
+  delay(200);
+  Serial.print("Servo 0 Position: ");
+  Serial.println(position_read[0]);
+  
+  Serial.print("Min Pos: ");
+  Serial.println(minPos);
+
+  Serial.print("Max Pos: ");
+  Serial.println(maxPos);
+  }
+*/
+  // Servo Calibration
+  if (analogRead(calibrate_button) > 512)
+  {
+   servo0.write(0);
+   servo1.write(0);
+   servo2.write(0);
+   delay(2000);
+   minPos0 = analogRead(servo0_feedback);
+   minPos1 = analogRead(servo1_feedback);
+   minPos2 = analogRead(servo2_feedback);
+   servo0.write(180);
+   servo1.write(180);
+   servo2.write(180);
+   delay(2000);
+   maxPos0 = analogRead(servo0_feedback);
+   maxPos1 = analogRead(servo1_feedback);
+   maxPos2 = analogRead(servo2_feedback);
+  }
+
+  // GROUP CONTROL BELOW:
+  if (analogRead(mode1_button) > 512)   // push button outputs are passed through a 10-bit ADC. 5V = 1024(1023?) or 1111111111. 0V = 0 or 0000000000. 2.5V = 512(511?) or 1000000000
+    {
+      servo0.write(0);
+      servo1.write(0);
+      servo2.write(0);
+      delay(1000);
+      for (position_cmd = 0; position_cmd <= 180; position_cmd += 1)
+        {
+          servo0.write(position_cmd);
+          servo1.write(position_cmd); 
+          servo2.write(position_cmd); 
+          delay(10);
+        }
+      for (position_cmd = 180; position_cmd >= 0; position_cmd -= 1)
+        {
+          servo0.write(position_cmd);
+          servo1.write(position_cmd); 
+          servo2.write(position_cmd); 
+          delay(10);
+        }
+    }
+  // INDIVUDAL CONTROL BELOW:
+  if (analogRead(mode2_button) > 512)
+    {
+      servo0.write(0);
+      servo1.write(90);
+      servo1.write(180);
+      delay(1000);
+      for (position_cmd = 0; position_cmd <= 180; position_cmd += 1)
+        {
+          servo0.write(position_cmd);
+          servo1.write(90); // uncomment when more servos are connected
+          servo2.write(180-position_cmd); // uncomment when more servos are connected
+          delay(10);
+        }
+      for (position_cmd = 180; position_cmd >= 0; position_cmd -= 1)
+        {
+          servo0.write(position_cmd);
+          servo1.write(90); // uncomment when more servos are connected
+          servo2.write(180-position_cmd); // uncomment when more servos are connected
+          delay(10);
+        }
+    }
+  // READ AND WRITE BELOW:
+  if (analogRead(recordPosition_button) > 512)
+    {
+      position_read[0] = map(analogRead(servo0_feedback), minPos0, maxPos0, 0, 180);  // Couldn't hurt to apply some smoothing function to these readings
+      position_read[1] = map(analogRead(servo1_feedback), minPos1, maxPos1, 0, 180);
+      position_read[2] = map(analogRead(servo2_feedback), minPos2, maxPos2, 0, 180);
+      delay(500);
+    }
+ 
+  if (analogRead(writePosition_button) > 512)
+    {
+      servo0.write(position_read[0]);
+      servo1.write(position_read[1]);
+      servo2.write(position_read[2]);
+      delay(1000);
+    }
+}
+
+
+ 
+
