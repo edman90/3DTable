@@ -1,5 +1,6 @@
 import { Component, AfterViewInit} from '@angular/core';
 import * as L from 'leaflet';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,12 @@ export class AppComponent implements AfterViewInit {
   title = 'front-end';
   // @ts-ignore
   private map;
+  private req = this.http.get<any>('http://127.0.0.1:5000/servo')
+
+  public moveServo(): void {
+    this.req.subscribe()
+    console.log("called")
+  }
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -30,7 +37,7 @@ export class AppComponent implements AfterViewInit {
 
 
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
     ngAfterViewInit(): void {
       this.initMap();
