@@ -1,6 +1,7 @@
 import { Component, AfterViewInit} from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -35,11 +36,22 @@ export class AppComponent implements AfterViewInit {
   }
 
 
+  checkoutForm = this.formBuilder.group({
+    name: '',
+    address: ''
+  });
 
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private formBuilder: FormBuilder) { }
 
     ngAfterViewInit(): void {
       this.initMap();
     }
+
+
+  onSubmit(): void {
+    // Process checkout data here
+    console.warn('Your order has been submitted', this.checkoutForm.value);
+    this.checkoutForm.reset();
+  }
 }
