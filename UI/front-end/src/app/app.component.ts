@@ -36,9 +36,10 @@ export class AppComponent implements AfterViewInit {
   }
 
 
-  checkoutForm = this.formBuilder.group({
-    name: '',
-    address: ''
+  coordinateForm = this.formBuilder.group({
+    address: '',
+    latitude: '',
+    longitude: ''
   });
 
 
@@ -51,7 +52,14 @@ export class AppComponent implements AfterViewInit {
 
   onSubmit(): void {
     // Process checkout data here
-    console.warn('Your order has been submitted', this.checkoutForm.value);
-    this.checkoutForm.reset();
+    console.warn('Selected Latitude', this.coordinateForm.value.latitude);
+    console.warn('Selected Longitude', this.coordinateForm.value.longitude);
+    // @ts-ignore
+    let lat = parseFloat(this.coordinateForm.value.latitude);
+    // @ts-ignore
+    let long = parseFloat(this.coordinateForm.value.longitude);
+    L.marker([lat, long],{}).addTo(this.map);
+    this.map.panTo(new L.LatLng(lat, long));
+    this.coordinateForm.reset();
   }
 }
