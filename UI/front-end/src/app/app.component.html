@@ -1,5 +1,5 @@
 
-<button mat-button (click)="moveServo()">Move Servo 1</button>
+
 
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
 
@@ -7,12 +7,33 @@
     <label for="address">
       Address
     </label>
-    <input id="address" type="text" formControlName="address">
+    <input id="address" type="text" formControlName="address" style="width:300px">
+    <div style="float:right; padding-left: 20px; padding-top: 10px">
+    <button mat-button type="submit" style="float:none" >Submit</button>
+    </div>
   </div>
 
-  <button mat-button type="submit" >Submit</button>
+  <div style="padding-top: 10px">
+  <div style="float:left; padding-left: 50px">
+  <label for="latitude">
+    Latitude
+  </label>
+  <input id="latitude" type="text" formControlName="latitude">
+      <label for="longitude">
+        Longitude
+      </label>
+      <input id="longitude" type="text" formControlName="longitude">
+    <div style="float:right; padding-left: 20px; padding-top: 10px">
+      <button mat-button type="submit" style="float:none" >Submit</button>
+    </div>
+  </div >
+    <div style="padding-left:1200px">
+    <button mat-button (click)="moveServo()">Move Servo 1</button>
+    </div>
+  </div>
 
 </form>
+
 
 <div class="map-container">
   <div class="map-frame">
