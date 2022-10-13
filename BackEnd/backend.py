@@ -28,6 +28,9 @@ def index():
                     'email': 'natalie@outlook.com'})
 
 
+#Function to generate the coordinates of an NxN array from four corner coordinates
+#The coordinate pairs should be passed in as [(A,B), (A,C), (A,D), (C,D)]
+#where the coordinates are the bottom left, the bottom right, the top left, and the top right respectively
 def generateCoordinateArray(corners):
     bottom_left_lat = corners[0][0]
     top_left_lat = corners[2][0]
