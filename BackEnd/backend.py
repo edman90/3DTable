@@ -110,7 +110,7 @@ def generateCoordinateArray(corners):
         for j in range(0,N):
             #test_arr += str(np.round(system_array[i][j],2)) + ' '
             test_arr += str(system_array[i][j]) + ' '
-        print(test_arr)
+        #print(test_arr)
         test_arr = ''
 
     for i in range(0, N):
@@ -136,9 +136,15 @@ def generateCoordinateArray(corners):
             arr_print += str(np.round(normalized_arr[i][j], 2)) + ' '
 
         arr_print += '<br>'
-        
+
+    #Just need to do np.multiply(normalized_arr, max_angle rotation) to get the servo values in an array
+    #Can convert array to list by normalized_arr.tolist()
+    #Then this can be used with the pyduino to set the values of the individual servo motors
+    normalized_arr = np.multiply(normalized_arr, 180)
 
     return arr_print
+
+
 
 
 app.run(debug=True)
