@@ -8,7 +8,12 @@ import '@bopen/leaflet-area-selection/dist/index.css';
 
 function App() {
 
-  return (
+  return (<div>
+      <form>
+          <label>Enter an address:
+              <input type="text" />
+          </label>
+      </form>
       <MapContainer
           className="markercluster-map"
           center={[51.0, 19.0]}
@@ -20,8 +25,8 @@ function App() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
 
-
       </MapContainer>
+      </div>
   );
 }
 
