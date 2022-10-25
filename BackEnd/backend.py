@@ -1,14 +1,38 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 from pyduino import *
 import time
 import numpy as np
 import requests
+#import request
+#import geopandas
+import geopy
+
 
 # Initialize Flask
 app = Flask(__name__)
 api = Api(app)
+@app.route('/address', methods=['POST'])
+def generateLatitudeAndLongitude():
+    addy = ''
+
+
+
+    if request.method == 'POST':
+        #print('It receives the post request')
+        addy = request.form['addy']
+        #print(addy)
+
+    #print(addy)
+
+    locator = geopy.Nominatim(user_agent='myGeocoder')
+    location = locator.geocode(addy)
+
+    print(str(location.latitude) + ' ' + str(location.longitude))
+
+    return str(location.latitude) + ' ' + str(location.longitude)
+
 @app.route('/servo')
 def index():
 
@@ -36,7 +60,9 @@ def index():
     lat2 = 40
     long2 = -100
 
-    return generateCoordinateArray([(lat1, long1), (lat1, long2), (lat2, long1), (lat2, long2)])
+    return generateLatitudeAndLongitude('156 Acton Road, Annapolis, Maryland')
+
+    #return generateCoordinateArray([(lat1, long1), (lat1, long2), (lat2, long1), (lat2, long2)])
 
 #Function to generate the coordinates of an NxN array from four corner coordinates
 #The coordinate pairs should be passed in as [(A,B), (C,B), (A,D), (C,D)]
@@ -143,6 +169,7 @@ def generateCoordinateArray(corners):
     normalized_arr = np.multiply(normalized_arr, 180)
 
     return arr_print
+
 
 
 
