@@ -62,14 +62,20 @@ def index():
 
     return generateLatitudeAndLongitude('156 Acton Road, Annapolis, Maryland')
 
-    #return generateCoordinateArray([(lat1, long1), (lat1, long2), (lat2, long1), (lat2, long2)])
+    #return generateCoordinateArray([(lat1, long1), (lat2, long2)])
 
 #Function to generate the coordinates of an NxN array from four corner coordinates
-#The coordinate pairs should be passed in as [(A,B), (C,B), (A,D), (C,D)]
+#The coordinate pairs should be passed in as [(A,B), (C,D)]
 #where the coordinates are the bottom left, the bottom right, the top left, and the top right respectively
 def generateCoordinateArray(corners):
+    #bottom_left_lat = corners[0][0]
+    #top_left_lat = corners[2][0]
+    #bottom_left_long = corners[0][1]
+    #bottom_right_long = corners[1][1]
+
+
     bottom_left_lat = corners[0][0]
-    top_left_lat = corners[2][0]
+    top_left_lat = corners[1][0]
     bottom_left_long = corners[0][1]
     bottom_right_long = corners[1][1]
 
