@@ -1,16 +1,21 @@
 body {
   margin: 1em;
   font-family: sans-serif;
+  background-color: #ffffff;
 }
 
 a {
   text-decoration: none;
   font-size: 1.3rem;
+  color: black;
 }
 
 .logo{
   color: #329621;
   font-weight: bold;
+  font-size: 2rem;
+  padding-left: -200px;
+
 }
 
 header {
@@ -24,6 +29,14 @@ ul {
   width: auto;
   height: auto;
   display: flex;
+  list-style-type: none;
+  margin: 0;
+
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
 }
 
 .App {
