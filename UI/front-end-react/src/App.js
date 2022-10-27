@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import '@bopen/leaflet-area-selection/dist/index.css';
-
+import "leaflet/dist/leaflet.css";
+import 'leaflet-area-select';
+import AreaSelect from "./AreaSelect";
 
 function locate() {
     alert('You clicked locate!');
@@ -15,6 +16,8 @@ function send() {
 }
 
 function App() {
+
+    const position = [51.505, -0.09];
 
   return ( <body>
       <div>
@@ -61,18 +64,13 @@ function App() {
           <button onClick={send}>Send to Table</button>
           </div>
           <div style={{clear: "both"}}>
-      <MapContainer
-          className="markercluster-map"
-          center={[51.0, 19.0]}
-          zoom={4}
-          maxZoom={18}
-      >
-        <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-
-      </MapContainer>
+              <MapContainer center={position} zoom={13} style={{ height: "100vh" }}>
+                  <TileLayer
+                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <AreaSelect />
+              </MapContainer>
           </div>
       </div>
       </body>
