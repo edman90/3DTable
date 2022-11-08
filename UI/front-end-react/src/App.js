@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import 'leaflet-area-select';
 import AreaSelect from "./AreaSelect";
+import fetch from "node-fetch";
 
 function locate() {
     alert('You clicked locate!');
