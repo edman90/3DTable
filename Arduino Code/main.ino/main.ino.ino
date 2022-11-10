@@ -9,6 +9,8 @@
  * - WA6:125 -> Writes 125 to analog output pin 6 (PWM)
  */
 
+#include <Adafruit_PWMServoDriver.h>
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 char operation; // Holds operation (R, W, ...)
 char mode; // Holds the mode (D, A)
@@ -79,13 +81,18 @@ void analog_write(int pin_number, int analog_value){
    * Performs an analog write on pin_number with the analog_value
    * The value must be range from 0 to 255
      */
-  analogWrite(pin_number, analog_value);
+  //analogWrite(pin_number, analog_value);
+
+
+  pwm.setPWM(pin_number, 0, analog_value)
 }
 
 void setup() {
     Serial.begin(9600); // Serial Port at 9600 baud
     Serial.setTimeout(100); // Instead of the default 1000ms, in order
-                            // to speed up the Serial.parseInt() 
+                            // to speed up the Serial.parseInt()
+    pwm.begin()
+    pwm.setPWMFreq(50)
 }
 
 

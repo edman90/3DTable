@@ -60,9 +60,32 @@ def index():
     lat2 = 40
     long2 = -100
 
-    return generateLatitudeAndLongitude('156 Acton Road, Annapolis, Maryland')
+    #return generateLatitudeAndLongitude('156 Acton Road, Annapolis, Maryland')
 
     #return generateCoordinateArray([(lat1, long1), (lat2, long2)])
+
+    coords, arr_print = generateCoordinateArray([(lat1, long1), (lat2, long2)])
+
+    #Tester Script 11/08/2022
+    a = Arduino()
+    # if your arduino was running on a serial port other than '/dev/ttyACM0/'
+    # declare: a = Arduino(serial_port='/dev/ttyXXXX')
+
+    time.sleep(3)
+    # sleep to ensure ample time for computer to make serial connection
+
+    # allow time to make connection
+    motorNumber = 1
+    maxPulse = 0.00225
+    percent = 50
+
+    for i in range(0,4):
+        for j in range(0,4):
+            a.analog_write(motorNumber, coords[i,j])
+            time.sleep(1)
+            motorNumber += 1
+
+    return arr_print
 
 #Function to generate the coordinates of an NxN array from four corner coordinates
 #The coordinate pairs should be passed in as [(A,B), (C,D)]
@@ -172,9 +195,12 @@ def generateCoordinateArray(corners):
     #Just need to do np.multiply(normalized_arr, max_angle rotation) to get the servo values in an array
     #Can convert array to list by normalized_arr.tolist()
     #Then this can be used with the pyduino to set the values of the individual servo motors
-    normalized_arr = np.multiply(normalized_arr, 180)
+    normalized_arr = np.multiply(normalized_arr, 0.00175)
+    normalized_arr = np.add(normalized_arr, 0.00075)
 
-    return arr_print
+    normalized_arr = np.round(normalized_arr, 5)
+
+    return normalized_arr, arr_print
 
 
 
