@@ -1,13 +1,13 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useContext} from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import fetch from "node-fetch";
-import CoordsContext from "../contexts/coordsContext";
+import {CoordsContext} from "./contexts/coordsContext";
 
 export default function AreaSelect() {
     const map = useMap();
     let layerGroup = L.layerGroup().addTo(map);
-    const coords = useContext(CoordsContext)
+    const {coords, saveCoords} = useContext(CoordsContext)
     useEffect(() => {
         if (!map.selectArea) return;
 
@@ -17,11 +17,9 @@ export default function AreaSelect() {
             let selectedBounds = e.bounds.toBBoxString()
            // console.log(e.bounds.toBBoxString()); // lon, lat, lon, lat
 
-
-            layerGroup.clearLayers();
-            this.setState({
-                coords: selectedBounds
-            })
+            layerGroup.clearLayers()
+            saveCoords(selectedBounds)
+            console.log(coords)
             L.rectangle(e.bounds, { color: "blue", weight: 1 }).addTo(layerGroup);
         });
 

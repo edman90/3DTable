@@ -1,14 +1,16 @@
 import React, { createContext, useState } from 'react'
 export const CoordsContext = createContext()
-const CoordsContextProvider = (props) => {
+export default function CoordsContextProvider (props) {
     const [coords , setCoords] = useState('510')
+    const saveCoords = (newCoords) => {
+        setCoords(newCoords)
+    }
     return (
         <CoordsContext.Provider
             value={{
-                coords
+                coords, saveCoords
             }}>
             {props.children}
         </CoordsContext.Provider>
     )
 }
-export default CoordsContextProvider
