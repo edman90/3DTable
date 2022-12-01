@@ -1,10 +1,12 @@
 import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import 'leaflet-area-select';
 import AreaSelect from "./AreaSelect";
-import fetch from "node-fetch";
+import SelectedCoords from "./components/selectedCoords";
+import CoordsContextProvider from "./contexts/coordsContext";
 
 function locate() {
     alert('You clicked locate!');
@@ -19,7 +21,6 @@ function send() {
 function App() {
 
     const position = [51.505, -0.09];
-
   return ( <body>
       <div>
           <header>
@@ -59,6 +60,8 @@ function App() {
               </form>
           </div>
           </div>
+          <CoordsContextProvider>
+          <SelectedCoords />
           <div class="buttons">
           <button onClick={locate}>Locate</button>
           <button onClick={reset}>Reset</button>
@@ -73,6 +76,7 @@ function App() {
                   <AreaSelect />
               </MapContainer>
           </div>
+          </CoordsContextProvider>
       </div>
       </body>
   );

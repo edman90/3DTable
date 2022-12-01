@@ -1,18 +1,28 @@
-import { useEffect } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
+import fetch from "node-fetch";
+import CoordsContext from "../contexts/coordsContext";
 
 export default function AreaSelect() {
     const map = useMap();
-
+    let layerGroup = L.layerGroup().addTo(map);
+    const coords = useContext(CoordsContext)
     useEffect(() => {
         if (!map.selectArea) return;
 
         map.selectArea.enable();
 
         map.on("areaselected", (e) => {
-            console.log(e.bounds.toBBoxString()); // lon, lat, lon, lat
-            L.rectangle(e.bounds, { color: "blue", weight: 1 }).addTo(map);
+            let selectedBounds = e.bounds.toBBoxString()
+           // console.log(e.bounds.toBBoxString()); // lon, lat, lon, lat
+
+
+            layerGroup.clearLayers();
+            this.setState({
+                coords: selectedBounds
+            })
+            L.rectangle(e.bounds, { color: "blue", weight: 1 }).addTo(layerGroup);
         });
 
         // You can restrict selection area like this:

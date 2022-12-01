@@ -2,6 +2,7 @@ import { Component, AfterViewInit} from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
+import 'leaflet-area-select';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,8 @@ export class AppComponent implements AfterViewInit {
       center: [39.8282, -98.5795],
       zoom: 3
     });
+
+    this.map.selectArea(true)
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -61,5 +64,15 @@ export class AppComponent implements AfterViewInit {
     L.marker([lat, long],{}).addTo(this.map);
     this.map.panTo(new L.LatLng(lat, long));
     this.coordinateForm.reset();
+
+    let bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+
+// create an orange rectangle
+    // @ts-ignore
+    L.rectangle(bounds,
+      {color: "#ff7800", weight: 1}).addTo(this.map);
+
+// zoom the map to the rectangle bounds
+    this.map.fitBounds(bounds);
   }
 }
