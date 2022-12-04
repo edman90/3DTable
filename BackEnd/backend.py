@@ -5,13 +5,13 @@ from pyduino import *
 import time
 import numpy as np
 import requests
-#import request
-#import geopandas
 import geopy
+from flask_cors import CORS
 
 
 # Initialize Flask
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 @app.route('/address', methods=['POST'])
 def generateLatitudeAndLongitude():
@@ -33,9 +33,12 @@ def generateLatitudeAndLongitude():
 
     return str(location.latitude) + ' ' + str(location.longitude)
 
-@app.route('/servo')
+@app.route('/servo', methods=['POST'])
 def index():
-
+    coords = ""
+    if request.method == 'POST':
+        coords = request.form['coords']
+        print(coords)
     #a = Arduino()
     # if your arduino was running on a serial port other than '/dev/ttyACM0/'
     # declare: a = Arduino(serial_port='/dev/ttyXXXX')
