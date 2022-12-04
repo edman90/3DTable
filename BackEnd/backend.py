@@ -6,13 +6,12 @@ import time
 import numpy as np
 import requests
 import geopy
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 
 # Initialize Flask
 app = Flask(__name__)
-CORS(app)
-api = Api(app)
+cors = CORS(app, resources={r"/servo": {"origins": "http://localhost:3000"}})
 @app.route('/address', methods=['POST'])
 def generateLatitudeAndLongitude():
     addy = ''
@@ -34,10 +33,13 @@ def generateLatitudeAndLongitude():
     return str(location.latitude) + ' ' + str(location.longitude)
 
 @app.route('/servo', methods=['POST'])
+@cross_origin()
 def index():
     coords = ""
     if request.method == 'POST':
-        coords = request.form['coords']
+        print(request.json)
+        coords = request.json
+        coords = coords["coords"].split(",")
         print(coords)
     #a = Arduino()
     # if your arduino was running on a serial port other than '/dev/ttyACM0/'
@@ -147,8 +149,6 @@ def generateCoordinateArray(corners):
             system_array[i,j] = result
 
             arr_print += str(np.round(system_array[i][j], 2)) + ' '
-
-            time.sleep(1)
             #
 
 
@@ -209,4 +209,4 @@ def generateCoordinateArray(corners):
 
 
 
-app.run(debug=True)
+app.run(debug=True, port=5050)
