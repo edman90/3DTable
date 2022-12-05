@@ -1,6 +1,5 @@
 import json
 from flask import Flask, jsonify, request
-from flask_restful import Resource, Api, reqparse, abort, marshal, fields
 from pyduino import *
 import time
 import numpy as np
@@ -13,6 +12,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app, resources={r"/servo": {"origins": "http://localhost:3000"}})
 @app.route('/address', methods=['POST'])
+@cross_origin()
 def generateLatitudeAndLongitude():
     addy = ''
 
@@ -20,7 +20,7 @@ def generateLatitudeAndLongitude():
 
     if request.method == 'POST':
         #print('It receives the post request')
-        addy = request.form['addy']
+        addy = request.json['addy']
         #print(addy)
 
     #print(addy)
@@ -36,38 +36,40 @@ def generateLatitudeAndLongitude():
 @cross_origin()
 def index():
     coords = ""
+    lat1 = 0
+    long1 = 0
+    lat2 = 0
+    long2 = 0
     if request.method == 'POST':
         print(request.json)
         coords = request.json
         coords = coords["coords"].split(",")
+        lat1 = float(coords[0])
+        long1 = float(coords[1])
+        lat2 = float(coords[2])
+        long2 = float(coords[3])
         print(coords)
-    #a = Arduino()
+
     # if your arduino was running on a serial port other than '/dev/ttyACM0/'
     # declare: a = Arduino(serial_port='/dev/ttyXXXX')
 
-    #time.sleep(3)
+
     # sleep to ensure ample time for computer to make serial connection
 
     # initialize the digital pin as output
 
-    #time.sleep(1)
+
     # allow time to make connection
-    #a.analog_write(1,1)
 
-    #return jsonify({'name': 'Natalie The National Park Worker',
-    #                'email': 'natalie@outlook.com'})
 
-    #return jsonify(requests.get('https://api.opentopodata.org/v1/test-dataset?locations=56.0000,123.0000').json()['results'][0]['elevation'])
+    if(lat1 == 0 and long1 == 0):
+        lat1 = 30
+        long1 = -110
 
-    lat1 = 30
-    long1 = -110
+        lat2 = 40
+        long2 = -100
 
-    lat2 = 40
-    long2 = -100
 
-    #return generateLatitudeAndLongitude('156 Acton Road, Annapolis, Maryland')
-
-    #return generateCoordinateArray([(lat1, long1), (lat2, long2)])
 
     coords, arr_print = generateCoordinateArray([(lat1, long1), (lat2, long2)])
 
