@@ -16,7 +16,7 @@ function App() {
 
     const position = [51.505, -0.09];
     const address = React.useRef()
-    const map = React.useRef()
+    const mapRef = React.useRef()
     const {coords, saveCoords} = useContext(CoordsContext)
     function send() {
         console.log(JSON.stringify({coords: "50"}))
@@ -37,7 +37,9 @@ function App() {
             },
             body: JSON.stringify({addy: address.current.value}),
         }).then((response) => response.text())
-            .then(data=>{ console.log(data); });
+            .then(data=>{
+                const dataSplit = data.split(" ")
+                mapRef.current.setView(dataSplit, 40);})
     }
 
   return ( <body>
@@ -89,7 +91,7 @@ function App() {
           <button onClick={send}>Send to Table</button>
           </div>
           <div style={{clear: "both"}}>
-              <MapContainer ref={map} center={position} zoom={13} style={{ height: "100vh" }}>
+              <MapContainer ref={mapRef} center={position} zoom={13} style={{ height: "100vh" }}>
                   <TileLayer
                       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
