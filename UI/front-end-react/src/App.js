@@ -7,9 +7,6 @@ import 'leaflet-area-select';
 import AreaSelect from "./AreaSelect";
 import SelectedCoords from "./components/selectedCoords";
 import {CoordsContext} from "./contexts/coordsContext";
-function locate() {
-    alert('You clicked locate!');
-}
 function reset() {
     alert('You clicked reset!');
 }
@@ -18,6 +15,8 @@ function reset() {
 function App() {
 
     const position = [51.505, -0.09];
+    const address = React.useRef()
+    const map = React.useRef()
     const {coords, saveCoords} = useContext(CoordsContext)
     function send() {
         console.log(JSON.stringify({coords: "50"}))
@@ -29,6 +28,18 @@ function App() {
             body: JSON.stringify({coords: coords}),
             });
     }
+
+    function locate() {
+        const response = fetch('http://127.0.0.1:5050/address', {
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({addy: address.current.value}),
+        }).then((response) => response.text())
+            .then(data=>{ console.log(data); });
+    }
+
   return ( <body>
       <div>
           <header>
@@ -44,7 +55,7 @@ function App() {
           <div class="location">
               <form style={{paddingTop: "40px"}}>
           <label>Enter an address:
-              <input type="text" />
+              <input type="text" ref={address}/>
           </label>
               </form>
               <div>
@@ -78,7 +89,7 @@ function App() {
           <button onClick={send}>Send to Table</button>
           </div>
           <div style={{clear: "both"}}>
-              <MapContainer center={position} zoom={13} style={{ height: "100vh" }}>
+              <MapContainer ref={map} center={position} zoom={13} style={{ height: "100vh" }}>
                   <TileLayer
                       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
