@@ -16,6 +16,8 @@ function App() {
 
     const position = [51.505, -0.09];
     const address = React.useRef()
+    const latRef = React.useRef()
+    const longRef = React.useRef()
     const mapRef = React.useRef()
     const {coords, saveCoords} = useContext(CoordsContext)
     function send() {
@@ -30,6 +32,11 @@ function App() {
     }
 
     function locate() {
+        if(latRef.current.value.length > 0 && longRef.current.value.length > 0){
+            const latLong = [latRef.current.value, longRef.current.value]
+            mapRef.current.setView(latLong, 40);
+            return
+        }
         const response = fetch('http://127.0.0.1:5050/address', {
             method: 'POST',
             headers:{
@@ -69,14 +76,14 @@ function App() {
           <div class="location">
               <form>
                   <label>Enter a latitude:
-                      <input type="text" />
+                      <input type="text" ref={latRef}/>
                   </label>
               </form>
           </div>
           <div class="location">
               <form style={{paddingBottom: "30px"}}>
                   <label>Enter a longitude:
-                      <input type="text" />
+                      <input type="text" ref={longRef}/>
                   </label>
               </form>
           </div>
