@@ -7,14 +7,11 @@ import 'leaflet-area-select';
 import AreaSelect from "./AreaSelect";
 import SelectedCoords from "./components/selectedCoords";
 import {CoordsContext} from "./contexts/coordsContext";
-function reset() {
-    alert('You clicked reset!');
-}
 
 
 function App() {
 
-    const position = [51.505, -0.09];
+    const position = [39.8282, -98.5795];
     const address = React.useRef()
     const latRef = React.useRef()
     const longRef = React.useRef()
@@ -49,48 +46,34 @@ function App() {
                 mapRef.current.setView(dataSplit, 40);})
     }
 
+    function reset() {
+        mapRef.current.setView(position, 4)
+    }
+
   return ( <body>
       <div>
           <header>
               <a href="#" class="logo">Topographic Table</a>
-              <nav>
-                  <ul>
-                      <li><a href="#" style={{paddingRight: "70px"}}>Home</a></li>
-                      <li><a href="#">Sandbox</a></li>
-                  </ul>
-              </nav>
           </header>
           <div>
-          <div class="location">
-              <form style={{paddingTop: "40px"}}>
-          <label>Enter an address:
-              <input type="text" ref={address}/>
-          </label>
-              </form>
+          <div style={{display:"block", marginRight:"20px"}}>
+          <label style={{display:"block", marginRight:"20px"}}>Enter an address:</label>
+              <input type="text" ref={address} style={{width:"500px"}}/>
               <div>
                 <p>
                     OR
                 </p>
               </div>
           </div>
-          <div class="location">
-              <form>
-                  <label>Enter a latitude:
+          <div style={{display:"block", marginRight:"20px"}}>
+                  <label style={{display:"block", marginRight:"20px"}}>Enter a latitude:</label>
                       <input type="text" ref={latRef}/>
-                  </label>
-              </form>
+
           </div>
-          <div class="location">
-              <form style={{paddingBottom: "30px"}}>
-                  <label>Enter a longitude:
+          <div style={{display:"block", marginRight:"20px"}}>
+                  <label style={{display:"block", marginRight:"20px"}}>Enter a longitude:</label>
                       <input type="text" ref={longRef}/>
-                  </label>
-              </form>
           </div>
-          </div>
-          <div className="selectedArea">
-              <p> Your selected coordinates are: {coords}</p>
-              <p> Click Send to Table </p>
           </div>
           <div class="buttons">
           <button onClick={locate}>Locate</button>
@@ -98,7 +81,7 @@ function App() {
           <button onClick={send}>Send to Table</button>
           </div>
           <div style={{clear: "both"}}>
-              <MapContainer ref={mapRef} center={position} zoom={13} style={{ height: "100vh" }}>
+              <MapContainer ref={mapRef} center={position} zoom={4} style={{ height: "100vh" }}>
                   <TileLayer
                       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

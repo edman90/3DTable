@@ -200,6 +200,12 @@ def generateCoordinateArray(corners):
     #Just need to do np.multiply(normalized_arr, max_angle rotation) to get the servo values in an array
     #Can convert array to list by normalized_arr.tolist()
     #Then this can be used with the pyduino to set the values of the individual servo motors
+
+
+    #Code to calibrate the servos
+    normalized_arr = np.multiply(normalized_arr, 0)
+    normalized_arr = np.add(normalized_arr, 1)
+
     normalized_arr = np.multiply(normalized_arr, 0.00175)
     normalized_arr = np.add(normalized_arr, 0.00075)
 
